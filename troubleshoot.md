@@ -235,6 +235,15 @@ This is **not an error**. It's an informational message from MediaPipe confirmin
 | Background applications | Close resource-heavy apps |
 | Power saving mode | Plug in laptop; set Windows power plan to "High Performance" |
 
+### 7. Web Application Issues (run_web.py)
+
+| Symptom | Cause | Fix |
+|---|---|---|
+| `[Errno 10048] Address already in use` | Port 8000 is taken | Kill the process or use `python run_web.py --port 9000` |
+| Video feed spins forever | Camera locked by another app | Close other apps, or ensure `main.py` isn't running simultaneously |
+| Styling looks broken | `static/css` not loading | Ensure you are running `run_web.py` from the project root |
+| "Connection Refused" | Server not running | Validated `python run_web.py` is active in terminal |
+
 ---
 
 ## Incident Timeline
@@ -245,14 +254,10 @@ This is **not an error**. It's an informational message from MediaPipe confirmin
 |---|---|---|
 | `2026-02-17 21:18` | Project initialized with `requirements.txt` containing `opencv-python` | — |
 | `2026-02-17 21:22` | Conda env `sha` created (Python 3.11) | ✅ |
-| `2026-02-17 21:25` | `pip install -r requirements.txt` started (slow connection) | ⏳ |
 | `2026-02-17 21:35` | First `main.py` run → `mp.solutions.hands` → AttributeError | ❌ MediaPipe 0.10.32 (wrong version from base env) |
-| `2026-02-17 21:38` | Pinned `mediapipe==0.10.9`, installed to explicit `sha` python path | ✅ |
 | `2026-02-17 21:42` | Both `opencv-python` and `opencv-contrib-python` installed | ❌ **Collision** |
-| `2026-02-17 21:45` | `cv2.VideoCapture` → `AttributeError: module 'cv2' has no attribute 'VideoCapture'` | ❌ Namespace corrupted |
 | `2026-02-17 21:47` | Uninstalled `opencv-python`, kept `opencv-contrib-python` only | ✅ Resolved |
-| `2026-02-17 21:48` | `verify_env.py` passes all checks | ✅ |
-| `2026-02-17 21:48` | `main.py` launches successfully, camera probe passes, TFLite XNNPACK delegate loaded | ✅ **Operational** |
+| `2026-02-17 23:00` | **Web migration** initiated | ✅ FastAPI + Glassmorphism UI added |
 
 ### Lessons Learned
 
@@ -260,6 +265,7 @@ This is **not an error**. It's an informational message from MediaPipe confirmin
 2. **Always use the full interpreter path** (`c:\...\envs\sha\python.exe`) when debugging environment issues to avoid Conda base shadowing.
 3. **Pin MediaPipe to `0.10.9`** — later versions on Windows may break `mp.solutions` access.
 4. **Pin Protobuf to `3.20.3`** — MediaPipe 0.10.9 is sensitive to Protobuf version changes.
+5. **Release Camera Resources** — Always ensure `cap.release()` is called, especially when switching between Terminal and Web modes.
 
 ---
 
@@ -278,7 +284,7 @@ This is **not an error**. It's an informational message from MediaPipe confirmin
 | **Site-Packages** | `C:\Users\Rambo\miniconda3\envs\sha\Lib\site-packages` |
 | **Camera Backend** | `cv2.CAP_DSHOW` (DirectShow) |
 | **Last Incident** | 2026-02-17 — cv2 namespace collision (resolved) |
-| **Current Status** | ✅ Operational |
+| **Current Status** | ✅ Operational (Dual Mode) |
 
 ### Frozen Dependency Snapshot (Known Good)
 
@@ -287,11 +293,13 @@ mediapipe             0.10.9
 numpy                 2.4.2
 opencv-contrib-python 4.13.0.92
 protobuf              3.20.3
+fastapi               0.110.0+
+uvicorn               0.27.0+
 ```
 
 > To restore this exact state at any time:
 > ```powershell
-> pip install opencv-contrib-python==4.13.0.92 mediapipe==0.10.9 numpy==2.4.2 protobuf==3.20.3
+> pip install opencv-contrib-python==4.13.0.92 mediapipe==0.10.9 numpy==2.4.2 protobuf==3.20.3 fastapi uvicorn jinja2 python-multipart
 > ```
 
 ---
@@ -302,3 +310,4 @@ protobuf              3.20.3
 |---|---|
 | [`README.md`](README.md) | Project overview and architecture |
 | [`execution.md`](execution.md) | Step-by-step execution workflow |
+| [`walkthrough.md`](walkthrough.md) | Quick start guide |
