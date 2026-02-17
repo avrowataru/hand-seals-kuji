@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Shadow Clone Jutsu — Real-time gesture-triggered body cloning powered by MediaPipe and OpenCV">
+    <title>Shadow Clone Jutsu — 影分身の術</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <!-- Background Glow Effects -->
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+    <div class="bg-glow bg-glow-3"></div>
+
+    <!-- Main Container -->
+    <main id="app">
+        <!-- Video Container (90% viewport) -->
+        <div id="video-container">
+            <img id="video-feed" src="/video_feed" alt="Shadow Clone Jutsu Live Feed">
+            
+            <!-- Jutsu Status Indicator (overlaid on video) -->
+            <div id="jutsu-indicator" class="indicator-inactive">
+                <div id="indicator-dot"></div>
+                <span id="indicator-text">STANDBY</span>
+            </div>
+
+            <!-- FPS Badge -->
+            <div id="fps-badge">
+                <span id="fps-value">--</span> FPS
+            </div>
+        </div>
+
+        <!-- Floating Side Panel (Glassmorphism) -->
+        <aside id="control-panel">
+            <div class="panel-header">
+                <h1>🥷 影分身の術</h1>
+                <p class="subtitle">Shadow Clone Jutsu</p>
+            </div>
+
+            <div class="panel-divider"></div>
+
+            <!-- Status Section -->
+            <section class="panel-section">
+                <h2>System Status</h2>
+                <div class="status-grid">
+                    <div class="status-item">
+                        <span class="status-label">Camera</span>
+                        <span id="status-camera" class="status-value status-ok">●  Detecting...</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">Engine</span>
+                        <span id="status-engine" class="status-value status-ok">●  MediaPipe 0.10.9</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">Jutsu</span>
+                        <span id="status-jutsu" class="status-value status-inactive">○  Inactive</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">FPS</span>
+                        <span id="status-fps" class="status-value">--</span>
+                    </div>
+                </div>
+            </section>
+
+            <div class="panel-divider"></div>
+
+            <!-- Controls Section -->
+            <section class="panel-section">
+                <h2>Controls</h2>
+                <button id="btn-debug" class="btn btn-outline" onclick="toggleDebug()">
+                    <span class="btn-icon">🔍</span> Debug Mode
+                </button>
+                <button id="btn-fullscreen" class="btn btn-outline" onclick="toggleFullscreen()">
+                    <span class="btn-icon">⛶</span> Fullscreen
+                </button>
+            </section>
+
+            <div class="panel-divider"></div>
+
+            <!-- Instructions Section -->
+            <section class="panel-section">
+                <h2>How to Activate</h2>
+                <div class="instructions">
+                    <div class="instruction-step">
+                        <span class="step-number">1</span>
+                        <span>Stand in front of the camera</span>
+                    </div>
+                    <div class="instruction-step">
+                        <span class="step-number">2</span>
+                        <span>Cross your Index & Middle fingers</span>
+                    </div>
+                    <div class="instruction-step">
+                        <span class="step-number">3</span>
+                        <span>Hold the seal — clones appear!</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Footer -->
+            <div class="panel-footer">
+                <span class="footer-text">Powered by MediaPipe + OpenCV</span>
+                <span class="footer-text">RTX 4070 • Windows 11</span>
+            </div>
+        </aside>
+    </main>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>

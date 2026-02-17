@@ -2,7 +2,14 @@
 # ⚠️ NEVER install opencv-python alongside opencv-contrib-python
 # ⚠️ NEVER install opencv-python-headless
 
+# Core CV Stack
 mediapipe==0.10.9
 opencv-contrib-python==4.13.0.92
 numpy==2.4.2
 protobuf==3.20.3
+
+# Web Stack
+fastapi
+uvicorn[standard]
+jinja2
+python-multipart

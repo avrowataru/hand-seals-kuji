@@ -1,0 +1,430 @@
+/* ============================================================
+   Shadow Clone Jutsu — Floating UI Stylesheet
+   Design: Dark mode + Glassmorphism + Animated accents
+   ============================================================ */
+
+/* --- Reset & Base --- */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    /* Color Palette */
+    --bg-primary: #0a0a1a;
+    --bg-card: rgba(15, 15, 35, 0.65);
+    --glass-border: rgba(100, 120, 255, 0.15);
+    --glass-shadow: rgba(0, 0, 0, 0.5);
+    --text-primary: #e8eaf6;
+    --text-secondary: #9fa8da;
+    --text-muted: #5c6bc0;
+    --accent-blue: #448aff;
+    --accent-cyan: #00e5ff;
+    --accent-purple: #7c4dff;
+    --jutsu-active: #00e5ff;
+    --jutsu-inactive: #5c6bc0;
+    --success: #00e676;
+    --danger: #ff5252;
+
+    /* Typography */
+    --font-primary: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-mono: 'JetBrains Mono', 'Consolas', monospace;
+
+    /* Spacing */
+    --panel-width: 320px;
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 20px;
+}
+
+body {
+    font-family: var(--font-primary);
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+}
+
+/* --- Background Glow Effects --- */
+.bg-glow {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: 0.3;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.bg-glow-1 {
+    width: 500px;
+    height: 500px;
+    background: var(--accent-purple);
+    top: -150px;
+    left: -100px;
+    animation: float-glow 12s ease-in-out infinite alternate;
+}
+
+.bg-glow-2 {
+    width: 400px;
+    height: 400px;
+    background: var(--accent-blue);
+    bottom: -100px;
+    right: -50px;
+    animation: float-glow 15s ease-in-out infinite alternate-reverse;
+}
+
+.bg-glow-3 {
+    width: 300px;
+    height: 300px;
+    background: var(--accent-cyan);
+    top: 50%;
+    left: 40%;
+    opacity: 0.15;
+    animation: float-glow 10s ease-in-out infinite alternate;
+}
+
+@keyframes float-glow {
+    0% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(30px, -20px) scale(1.1); }
+    100% { transform: translate(-20px, 30px) scale(0.95); }
+}
+
+/* --- Main Layout --- */
+#app {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    position: relative;
+    z-index: 1;
+}
+
+/* --- Video Container --- */
+#video-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 20px;
+    padding-right: calc(var(--panel-width) + 20px);
+}
+
+#video-feed {
+    max-width: 100%;
+    max-height: 90vh;
+    border-radius: var(--radius-xl);
+    box-shadow:
+        0 0 0 1px var(--glass-border),
+        0 20px 60px rgba(0, 0, 0, 0.6),
+        0 0 80px rgba(68, 138, 255, 0.08);
+    object-fit: contain;
+    transition: box-shadow 0.5s ease;
+}
+
+#video-feed.jutsu-active {
+    box-shadow:
+        0 0 0 2px var(--jutsu-active),
+        0 20px 60px rgba(0, 0, 0, 0.6),
+        0 0 120px rgba(0, 229, 255, 0.25);
+}
+
+/* --- Jutsu Status Indicator --- */
+#jutsu-indicator {
+    position: absolute;
+    top: 36px;
+    left: 36px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+    border-radius: 50px;
+    background: rgba(15, 15, 35, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    transition: all 0.4s ease;
+    z-index: 10;
+}
+
+#indicator-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--jutsu-inactive);
+    transition: all 0.4s ease;
+}
+
+.indicator-active #indicator-dot {
+    background: var(--jutsu-active);
+    box-shadow: 0 0 12px var(--jutsu-active), 0 0 30px rgba(0, 229, 255, 0.4);
+    animation: pulse-dot 1.5s ease-in-out infinite;
+}
+
+.indicator-active {
+    border-color: rgba(0, 229, 255, 0.4);
+    box-shadow: 0 0 30px rgba(0, 229, 255, 0.15);
+}
+
+.indicator-active #indicator-text {
+    color: var(--jutsu-active);
+}
+
+@keyframes pulse-dot {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.4); opacity: 0.7; }
+}
+
+/* --- FPS Badge --- */
+#fps-badge {
+    position: absolute;
+    top: 36px;
+    right: calc(var(--panel-width) + 36px);
+    padding: 8px 16px;
+    border-radius: 50px;
+    background: rgba(15, 15, 35, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    z-index: 10;
+}
+
+#fps-value {
+    color: var(--accent-cyan);
+    font-weight: 700;
+}
+
+/* --- Floating Side Panel (Glassmorphism) --- */
+#control-panel {
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: var(--panel-width);
+    height: 100vh;
+    padding: 28px 24px;
+    background: var(--bg-card);
+    backdrop-filter: blur(24px) saturate(150%);
+    -webkit-backdrop-filter: blur(24px) saturate(150%);
+    border-left: 1px solid var(--glass-border);
+    box-shadow: -10px 0 40px var(--glass-shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    z-index: 20;
+    overflow-y: auto;
+}
+
+/* Panel Header */
+.panel-header {
+    text-align: center;
+    padding-bottom: 8px;
+}
+
+.panel-header h1 {
+    font-size: 24px;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue), var(--accent-purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 4px;
+}
+
+.subtitle {
+    font-size: 13px;
+    color: var(--text-muted);
+    font-weight: 400;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+/* Divider */
+.panel-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--glass-border), transparent);
+    margin: 12px 0;
+}
+
+/* Panel Section */
+.panel-section {
+    padding: 4px 0;
+}
+
+.panel-section h2 {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+}
+
+/* Status Grid */
+.status-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.status-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.status-label {
+    font-size: 13px;
+    color: var(--text-secondary);
+    font-weight: 400;
+}
+
+.status-value {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.status-ok {
+    color: var(--success);
+}
+
+.status-inactive {
+    color: var(--text-muted);
+}
+
+.status-active {
+    color: var(--jutsu-active);
+    text-shadow: 0 0 8px rgba(0, 229, 255, 0.5);
+}
+
+/* Buttons */
+.btn {
+    width: 100%;
+    padding: 12px 16px;
+    border: none;
+    border-radius: var(--radius-md);
+    font-family: var(--font-primary);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.25s ease;
+    margin-bottom: 8px;
+}
+
+.btn-outline {
+    background: rgba(68, 138, 255, 0.08);
+    color: var(--text-primary);
+    border: 1px solid rgba(68, 138, 255, 0.2);
+}
+
+.btn-outline:hover {
+    background: rgba(68, 138, 255, 0.15);
+    border-color: rgba(68, 138, 255, 0.4);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(68, 138, 255, 0.1);
+}
+
+.btn-outline:active {
+    transform: translateY(0);
+}
+
+.btn-outline.active {
+    background: rgba(0, 229, 255, 0.15);
+    border-color: var(--accent-cyan);
+    color: var(--accent-cyan);
+}
+
+.btn-icon {
+    font-size: 16px;
+}
+
+/* Instructions */
+.instructions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.instruction-step {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.step-number {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(68, 138, 255, 0.12);
+    border: 1px solid rgba(68, 138, 255, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--accent-blue);
+    flex-shrink: 0;
+}
+
+/* Footer */
+.panel-footer {
+    margin-top: auto;
+    padding-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    text-align: center;
+}
+
+.footer-text {
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.5px;
+}
+
+/* --- Responsive --- */
+@media (max-width: 900px) {
+    :root {
+        --panel-width: 260px;
+    }
+    .panel-header h1 {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 700px) {
+    #app {
+        flex-direction: column;
+    }
+    #video-container {
+        padding-right: 20px;
+        height: 60vh;
+    }
+    #control-panel {
+        position: relative;
+        width: 100%;
+        height: auto;
+        border-left: none;
+        border-top: 1px solid var(--glass-border);
+    }
+    #fps-badge {
+        right: 36px;
+    }
+}
