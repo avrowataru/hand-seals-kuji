@@ -1,0 +1,13 @@
+.idea/
+.agent/
+.vscode/
+__pycache__/
+*.pyc
+venv/
+.env
+.DS_Store
+implementation_plan.md
+plan.md
+project.md
+save.txt
+verify_env.py
